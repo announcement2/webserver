@@ -1,0 +1,50 @@
+:root {
+    --font: Arial, Helvetica, sans-serif;
+    --foreground-color: white;
+    --background-color: #303030;
+}
+
+body {
+    background-color: var(--background-color);
+}
+
+h1 {
+    color: var(--foreground-color);
+    font-family: var(--font);
+}
+
+h2 {
+    color: var(--foreground-color);
+    font-family: var(--font);
+}
+
+h3 {
+    color: var(--foreground-color);
+    font-family: var(--font);
+}
+
+h4 {
+    color: var(--foreground-color);
+    font-family: var(--font);
+}
+
+h5 {
+    color: var(--foreground-color);
+    font-family: var(--font);
+}
+
+p {
+    color: var(--foreground-color);
+    font-family: var(--font);
+}
+
+li {
+    color: var(--foreground-color);
+    font-family: var(--font);
+}
+
+.recent-announcements {
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 10px;
+}

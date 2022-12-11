@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 style="text-align: center;">Recent Announcements</h1>
+<ul class="recent-announcements">
+    {% for announcement in announcements %}
+    <li>{{ announcement['message'] }} - {{ announcement['from'] }} - {{ naturaltime(current_time-announcement['time_sent']) }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
