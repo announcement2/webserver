@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="announcement-form" method="POST">
+    <p class="input-label">Name</p>
+    <input type="text" name="name" value="{{ cookies['name'] }}">
+    <p class="input-label">Message</p>
+    <input type="text" name="message">
+    <br/>
+    <button class="button annouce-button" type="submit">Announce</button>
+</form>
+{% endblock %}
