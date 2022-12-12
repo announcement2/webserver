@@ -76,6 +76,15 @@ li {
 
 input {
     width: 100%;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+    font-family: var(--font);
+    padding: 5px;
+    border: 1px solid var(--foreground-color);
+}
+
+input:focus {
+    outline: 3px solid var(--foreground-color);
 }
 
 .input-label{
