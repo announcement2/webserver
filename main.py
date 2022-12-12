@@ -3,10 +3,21 @@ import announcement_client
 import time
 import threading
 import humanize
+import json
+import os
 
 app = Flask(__name__)
 announcement_client.run_client('webserver')
 app.recent_announcements = []
+if not os.path.exists('announcement_presets.json'):
+    announcement_preset_f = open('announcement_presets.json', 'x')
+    announcement_preset_f.write('[]')
+    announcement_preset_f.close()
+    announcement_presets = []
+else:
+    announcement_presets_f = open('announcement_presets.json', 'r')
+    announcement_presets = json.loads(announcement_presets_f.read())
+    announcement_presets_f.close()
 
 @announcement_client.announcement_callback
 def handle_announcement(message, sender):
@@ -45,7 +56,8 @@ def make_announcement():
     cookies = dict(request.cookies)
     if not 'name' in cookies:
         cookies['name'] = ''
-    return render_template('make_announcement.html', title='Make Announcement', cookies=cookies)
+    
+    return render_template('make_announcement.html', title='Make Announcement', cookies=cookies, presets=announcement_presets)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=4592)

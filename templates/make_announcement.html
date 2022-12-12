@@ -2,10 +2,17 @@
 {% block content %}
 <form class="announcement-form" method="POST">
     <p class="input-label">Name</p>
-    <input class="form-textbox" type="text" name="name" value="{{ cookies['name'] }}">
+    <input class="form-textbox" style="width: 280px;" type="text" name="name" value="{{ cookies['name'] }}">
     <p class="input-label">Message</p>
-    <textarea class="form-textbox" name="message" style="width: 280px; height: 280px;"></textarea>
+    <textarea class="form-textbox" id="announcement_message" name="message" style="width: 280px; height: 280px;"></textarea>
+    <p class="input-label">Presets</p>
+    <div class="presets">
+    {% for preset in presets %}
+        <button class="button" onclick="announce_preset('{{ preset }}');">{{ preset }}</button>
+    {% endfor %}
+    </div>
     <br/>
-    <button class="button annouce-button" type="submit">Announce</button>
+    <button class="button annouce-button" type="submit" id="announce_button">Announce</button>
 </form>
+<script src="/static/js/presets.js"></script>
 {% endblock %}

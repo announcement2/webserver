@@ -90,3 +90,9 @@ li {
 .input-label{
     margin-right: auto;
 }
+
+.presets {
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
