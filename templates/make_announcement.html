@@ -2,9 +2,9 @@
 {% block content %}
 <form class="announcement-form" method="POST">
     <p class="input-label">Name</p>
-    <input type="text" name="name" value="{{ cookies['name'] }}">
+    <input class="form-textbox" type="text" name="name" value="{{ cookies['name'] }}">
     <p class="input-label">Message</p>
-    <input type="text" name="message">
+    <textarea class="form-textbox" name="message" style="width: 280px; height: 280px;"></textarea>
     <br/>
     <button class="button annouce-button" type="submit">Announce</button>
 </form>
