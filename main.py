@@ -86,7 +86,7 @@ def kiosk_make_announcement():
 
     cookies = dict(request.cookies)
     if not 'name' in cookies:
-        cookies['name'] = ''
+        cookies['name'] = 'Kiosk'
     
     return render_template('kiosk_make_announcement.html', title='Make Announcement', cookies=cookies, presets=announcement_presets)
 
