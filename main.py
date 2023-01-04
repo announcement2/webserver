@@ -1,14 +1,19 @@
 from flask import Flask, render_template, request, make_response, redirect
+from flask_socketio import SocketIO, join_room
 import announcement_client
 import time
 import threading
 import humanize
 import json
 import os
+import uuid
 
 app = Flask(__name__)
+socketio = SocketIO(app=app)
 announcement_client.run_client('webserver')
 app.recent_announcements = []
+app.announcement_dict = {}
+
 if not os.path.exists('announcement_presets.json'):
     announcement_preset_f = open('announcement_presets.json', 'x')
     announcement_preset_f.write('[]')
@@ -22,10 +27,22 @@ else:
 @announcement_client.announcement_callback
 def handle_announcement(message, sender):
     current_time = time.time()
+    announcement_uuid = str(uuid.uuid4())
     app.recent_announcements.append({
         'time_sent': current_time,
         'message': message,
+        'from': sender,
+        'uuid': announcement_uuid
+    })
+    app.announcement_dict[announcement_uuid] = {
+        'time_sent': current_time,
+        'message': message,
         'from': sender
+    }
+    socketio.emit('announcement', {
+        'name': sender,
+        'message': message,
+        'uuid': announcement_uuid
     })
 
 @app.route('/')
@@ -90,5 +107,25 @@ def kiosk_make_announcement():
     
     return render_template('kiosk_make_announcement.html', title='Make Announcement', cookies=cookies, presets=announcement_presets)
 
+@socketio.on('joinRoom')
+def joinRoom():
+    room = str(uuid.uuid4())
+    join_room(room)
+    socketio.emit('joinedRoom', room, room=room)
+
+@socketio.on('updateAnnouncementTimes')
+def update_announcement_times(data):
+    send_data = {}
+    current_time = time.time()
+    room = data['room']
+    data = data['data']
+    for announcement in data:
+        if not announcement in app.announcement_dict:
+            socketio.emit('clearAnnouncements')
+            break
+        announcement_data = app.announcement_dict[announcement]
+        send_data[announcement] = humanize.naturaltime(current_time-announcement_data['time_sent'])
+    socketio.emit('announcementTimeUpdate', send_data, room=room)
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=4592)
+    socketio.run(app, host='0.0.0.0', port=4592)

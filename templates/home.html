@@ -1,15 +1,33 @@
 {% extends 'base.html' %}
 {% block content %}
+
+<script>
+    var announcements = {}
+
+    function addAnnouncementToObj(uuid, name, message, time) {
+        announcements[uuid] = {
+            "name": name,
+            "message": message,
+            "time": time
+        }
+    }
+</script>
+
 <div class="top">
     <h1>Recent Announcements</h1>
     <a class="button" href="/make_announcement">Make Announcement</a>
 </div>
 
-<ul class="recent-announcements">
+<ul class="recent-announcements" id="recent-announcements">
     {% for announcement in announcements %}
-    <li>{{ announcement['message'] }} - {{ announcement['from'] }} - {{ naturaltime(current_time-announcement['time_sent']) }}</li>
+    <li id="{{ announcement['uuid'] }}">{{ announcement['message'] }} - {{ announcement['from'] }} - {{ naturaltime(current_time-announcement['time_sent']) }}</li>
+    <script>
+        addAnnouncementToObj("{{ announcement['uuid'] }}", "{{ announcement['from'] }}", "{{ announcement['message'] }}", "{{ naturaltime(current_time-announcement['time_sent']) }}");
+    </script>
     {% endfor %}
 </ul>
 
+<script src="/static/js/socket.io.min.js"></script>
+<script src="/static/js/update_recent_announcements.js"></script>
 
 {% endblock %}
