@@ -128,4 +128,4 @@ def update_announcement_times(data):
     socketio.emit('announcementTimeUpdate', send_data, room=room)
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=4592)
+    socketio.run(app, host='0.0.0.0', port=4592, allow_unsafe_werkzeug=True)
